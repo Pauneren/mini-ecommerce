@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | MiniStore</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Mini<span>Store</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="admin.html">Admin</a>
+      <a class="cart-link" href="cart.html">Cart (<span data-cart-count>0</span>)</a>
+    </nav>
+  </div>
+</header>
+
+
+  <main>
+    <section class="page-title">
+      <div class="container">
+        <p class="eyebrow">Shop</p>
+        <h1>All products</h1>
+        <p class="lead">Browse the product catalog loaded from the Express and SQLite backend.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div id="all-products" class="product-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 MiniStore. Built as a beginner-friendly full-stack e-commerce starter.</p>
+  </div>
+</footer>
+
+
+  <script src="js/main.js"></script>
+</body>
+</html>

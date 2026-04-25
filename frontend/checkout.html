@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | MiniStore</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Mini<span>Store</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="admin.html">Admin</a>
+      <a class="cart-link" href="cart.html">Cart (<span data-cart-count>0</span>)</a>
+    </nav>
+  </div>
+</header>
+
+
+  <main>
+    <section class="page-title">
+      <div class="container">
+        <p class="eyebrow">Checkout</p>
+        <h1>Complete your order</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container checkout-layout">
+        <form id="checkout-form" class="panel">
+          <div id="checkout-message"></div>
+          <div class="form-grid">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required>
+            </div>
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" required>
+            </div>
+            <div>
+              <label for="city">City</label>
+              <input id="city" name="city" required>
+            </div>
+            <div class="full">
+              <label for="address">Address</label>
+              <input id="address" name="address" required>
+            </div>
+            <div>
+              <label for="postal_code">Postal code</label>
+              <input id="postal_code" name="postal_code" required>
+            </div>
+            <div class="full">
+              <label for="notes">Order notes</label>
+              <textarea id="notes" name="notes" rows="4"></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit">Place order</button>
+          </div>
+        </form>
+
+        <aside class="panel">
+          <h3>Order summary</h3>
+          <div id="checkout-summary"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 MiniStore. Built as a beginner-friendly full-stack e-commerce starter.</p>
+  </div>
+</footer>
+
+
+  <script src="js/main.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>
