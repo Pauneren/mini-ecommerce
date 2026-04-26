@@ -30,6 +30,7 @@ const allowedOrigins = new Set(
   [
     normalizeOrigin("http://localhost:3000"),
     normalizeOrigin("http://localhost:3001"),
+    normalizeOrigin("http://localhost:3010"),
     normalizeOrigin(process.env.FRONTEND_URL),
   ].filter(Boolean)
 );
