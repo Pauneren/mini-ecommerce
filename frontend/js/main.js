@@ -2,11 +2,9 @@
 // const API_BASE = "http://localhost:5050/api";
 
 // PRODUCTION:
-// After deploying the backend on Render, replace this with:
-// const API_BASE = "https://YOUR-RENDER-BACKEND-URL.onrender.com/api";
+const API_BASE = "https://mini-ecommerce-ysxy.onrender.com/api";
 
-const API_BASE = "https://mini-ecommerce-ysxy.onrender.com/api";window.API_BASE = API_BASE;
-
+window.API_BASE = API_BASE;
 function money(value) {
   return `$${Number(value).toFixed(2)}`;
 }
