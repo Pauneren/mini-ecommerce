@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Products | MiniStore</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Mini<span>Store</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="admin.html">Orders</a>
+        <a href="admin-products.html">Manage Products</a>
+        <a class="cart-link" href="cart.html">Cart (<span data-cart-count>0</span>)</a>
+        <button class="btn secondary" id="logout-btn" onclick="auth.logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+
+  <main>
+    <section class="page-title">
+      <div class="container">
+        <p class="eyebrow">Admin</p>
+        <h1>Manage products</h1>
+        <p class="lead">The store owner can add, edit, and delete products from this page without coding.</p>
+
+        <div class="admin-tabs">
+          <a href="admin.html">Orders</a>
+          <a class="active" href="admin-products.html">Manage Products</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container checkout-layout">
+        <form id="product-form" class="panel">
+          <h2 id="form-title">Add product</h2>
+          <p class="form-help">Use an online image URL for now. Later you can add real image upload with Cloudinary,
+            Firebase Storage, or your own upload backend.</p>
+
+          <input type="hidden" id="product-id">
+
+          <div id="product-message"></div>
+
+          <div class="form-grid">
+            <div class="full">
+              <label for="name">Product name</label>
+              <input id="name" name="name" placeholder="Example: Ceramic Coffee Mug" required>
+            </div>
+
+            <div>
+              <label for="price">Price</label>
+              <input id="price" name="price" type="number" min="0" step="0.01" placeholder="18.99" required>
+            </div>
+
+            <div>
+              <label for="image">Image URL</label>
+              <input id="image" name="image" type="url" placeholder="https://...">
+            </div>
+
+            <div>
+              <label for="image-upload">Or upload image from computer</label>
+              <input id="image-upload" name="image-upload" type="file" accept="image/*">
+            </div>
+
+            <div class="full">
+              <label for="short_description">Short description</label>
+              <input id="short_description" name="short_description" placeholder="Short text for the product card"
+                required>
+            </div>
+
+            <div class="full">
+              <label for="description">Full description</label>
+              <textarea id="description" name="description" rows="5" placeholder="Longer product description"
+                required></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit" id="save-product-btn">Save product</button>
+            <button class="btn secondary hidden" type="button" id="cancel-edit-btn">Cancel edit</button>
+          </div>
+        </form>
+
+        <aside class="panel">
+          <h2>Current products</h2>
+          <div id="admin-products-list"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <div class="container">
+      <p> 2026 MiniStore. Built as a beginner-friendly full-stack e-commerce starter.</p>
+    </div>
+  </footer>
+
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin-products.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | MiniStore</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Mini<span>Store</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a class="cart-link" href="cart.html">Cart (<span data-cart-count>0</span>)</a>
+    </nav>
+  </div>
+</header>
+
+  <main>
+    <section class="page-title">
+      <div class="container">
+        <p class="eyebrow">Admin</p>
+        <h1>Login</h1>
+        <p class="lead">Enter your credentials to access the admin dashboard.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="panel checkout-layout">
+          <form id="login-form">
+            <h2>Admin Login</h2>
+            <p class="form-help">Use your admin email and password to access the store management dashboard.</p>
+
+            <div id="login-message"></div>
+
+            <div class="form-grid">
+              <div class="full">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="admin@example.com" required>
+              </div>
+
+              <div class="full">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="Enter your password" required>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="submit" id="login-btn">Login</button>
+            </div>
+          </form>
+
+          <aside class="panel">
+            <h2>Admin Dashboard</h2>
+            <p>After logging in, you'll be able to:</p>
+            <ul>
+              <li>View and manage customer orders</li>
+              <li>Add, edit, and delete products</li>
+              <li>Upload product images</li>
+              <li>Monitor store activity</li>
+            </ul>
+            <p><strong>Security note:</strong> Make sure to use a strong password and keep your credentials secure.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 MiniStore. Built as a beginner-friendly full-stack e-commerce starter.</p>
+  </div>
+</footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin-login.js"></script>
+</body>
+</html>
