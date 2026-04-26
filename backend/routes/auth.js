@@ -30,21 +30,27 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(password, adminPassword);
+    // Verify password. Support either plain text or bcrypt-hashed ADMIN_PASSWORD.
+    let isPasswordValid = false;
+    if (adminPassword.startsWith('$2a$') || adminPassword.startsWith('$2b$') || adminPassword.startsWith('$2y$')) {
+      isPasswordValid = await bcrypt.compare(password, adminPassword);
+    } else {
+      isPasswordValid = password === adminPassword;
+    }
+
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     // Create JWT token
     const token = jwt.sign(
-      { 
+      {
         email: adminEmail,
         role: 'admin',
         iat: Math.floor(Date.now() / 1000)
       },
       jwtSecret,
-      { 
+      {
         expiresIn: '24h' // Token expires in 24 hours
       }
     );
@@ -69,7 +75,7 @@ router.post('/login', async (req, res) => {
 router.get('/verify', (req, res) => {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
-    
+
     if (!token) {
       return res.status(401).json({ error: 'No token provided' });
     }
@@ -81,7 +87,7 @@ router.get('/verify', (req, res) => {
 
     // Verify token
     const decoded = jwt.verify(token, jwtSecret);
-    
+
     res.json({
       valid: true,
       admin: {

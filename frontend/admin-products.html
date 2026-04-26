@@ -41,12 +41,13 @@
 
     <section class="section">
       <div class="container checkout-layout">
-        <form id="product-form" class="panel">
+        <form id="product-form" class="panel" enctype="multipart/form-data">
           <h2 id="form-title">Add product</h2>
-          <p class="form-help">Use an online image URL for now. Later you can add real image upload with Cloudinary,
-            Firebase Storage, or your own upload backend.</p>
+          <p class="form-help">Upload a product image from your computer. Supported formats: JPG, PNG, WEBP, GIF (max
+            5MB).</p>
 
           <input type="hidden" id="product-id">
+          <input type="hidden" id="image" name="image">
 
           <div id="product-message"></div>
 
@@ -61,14 +62,10 @@
               <input id="price" name="price" type="number" min="0" step="0.01" placeholder="18.99" required>
             </div>
 
-            <div>
-              <label for="image">Image URL</label>
-              <input id="image" name="image" type="url" placeholder="https://...">
-            </div>
-
-            <div>
-              <label for="image-upload">Or upload image from computer</label>
-              <input id="image-upload" name="image-upload" type="file" accept="image/*">
+            <div class="full">
+              <label for="image_file">Product image</label>
+              <input id="image_file" name="image_file" type="file" accept="image/png,image/jpeg,image/webp,image/gif"
+                required>
             </div>
 
             <div class="full">

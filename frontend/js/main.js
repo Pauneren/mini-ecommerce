@@ -1,5 +1,6 @@
 // For local development use:
-const API_BASE = "http://localhost:5050/api";
+const API_BASE = "http://localhost:5053/api";
+window.API_BASE = API_BASE;
 
 // For deployment replace it with:
 // const API_BASE = "https://YOUR-BACKEND-URL/api";

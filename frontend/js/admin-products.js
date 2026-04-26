@@ -14,6 +14,8 @@ function showMessage(text, type = "notice") {
 function clearProductForm() {
   productForm.reset();
   productIdInput.value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("image_file").setAttribute("required", "required");
   formTitle.textContent = "Add product";
   saveProductBtn.textContent = "Save product";
   cancelEditBtn.classList.add("hidden");
@@ -21,35 +23,17 @@ function clearProductForm() {
 }
 
 function getProductFormData() {
+  const imageFile = document.getElementById("image_file").files[0];
+  const existingImage = document.getElementById("image").value.trim();
+
   return {
     name: document.getElementById("name").value.trim(),
     price: Number(document.getElementById("price").value),
-    image: document.getElementById("image").value.trim(),
+    image_file: imageFile,
+    image: existingImage,
     short_description: document.getElementById("short_description").value.trim(),
     description: document.getElementById("description").value.trim(),
   };
-}
-
-async function uploadImage(file) {
-  const formData = new FormData();
-  formData.append('image', file);
-
-  try {
-    const response = await fetch(`${API_BASE}/upload`, auth.addAuthHeader({
-      method: 'POST',
-      body: formData
-      // Note: Don't manually set Content-Type when sending FormData
-    }));
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || 'Upload failed');
-    }
-
-    return data.imageUrl;
-  } catch (error) {
-    throw error;
-  }
 }
 
 function validateProduct(product) {
@@ -57,6 +41,10 @@ function validateProduct(product) {
   if (!product.price || product.price < 0) return "A valid price is required.";
   if (!product.short_description) return "Short description is required.";
   if (!product.description) return "Full description is required.";
+  if (product.image_file && product.image_file.size > 5 * 1024 * 1024) {
+    return "Image must be 5MB or smaller.";
+  }
+  if (!product.image_file && !product.image) return "Product image is required.";
   return null;
 }
 
@@ -109,6 +97,9 @@ function startEditProduct(product) {
   document.getElementById("short_description").value = product.short_description;
   document.getElementById("description").value = product.description;
 
+  // For editing, make file input optional since there's an existing image
+  document.getElementById("image_file").removeAttribute("required");
+
   formTitle.textContent = `Edit product #${product.id}`;
   saveProductBtn.textContent = "Update product";
   cancelEditBtn.classList.remove("hidden");
@@ -120,37 +111,7 @@ function startEditProduct(product) {
 async function saveProduct(event) {
   event.preventDefault();
 
-  const imageUpload = document.getElementById("image-upload");
-  const imageUrl = document.getElementById("image").value.trim();
-  const hasFile = imageUpload.files && imageUpload.files[0];
-
-  // Check if either URL is provided or file is selected
-  if (!imageUrl && !hasFile) {
-    showMessage("Image URL or file upload is required.");
-    return;
-  }
-
-  let finalImageUrl = imageUrl;
-
-  // Handle file upload if a file is selected
-  if (hasFile) {
-    try {
-      showMessage("Uploading image...");
-      finalImageUrl = await uploadImage(imageUpload.files[0]);
-      document.getElementById("image").value = finalImageUrl; // Update the URL field
-    } catch (error) {
-      showMessage(`Image upload failed: ${error.message}`);
-      return;
-    }
-  }
-
-  const product = {
-    name: document.getElementById("name").value.trim(),
-    price: Number(document.getElementById("price").value),
-    image: finalImageUrl,
-    short_description: document.getElementById("short_description").value.trim(),
-    description: document.getElementById("description").value.trim(),
-  };
+  const product = getProductFormData();
 
   const validationError = validateProduct(product);
 
@@ -163,13 +124,23 @@ async function saveProduct(event) {
   const url = editingId ? `${API_BASE}/products/${editingId}` : `${API_BASE}/products`;
   const method = editingId ? "PUT" : "POST";
 
+  const formData = new FormData();
+  formData.append("name", product.name);
+  formData.append("price", product.price);
+  formData.append("short_description", product.short_description);
+  formData.append("description", product.description);
+
+  if (product.image_file) {
+    formData.append("image_file", product.image_file);
+  } else if (product.image) {
+    formData.append("image", product.image);
+  }
+
   try {
     const response = await fetch(url, auth.addAuthHeader({
       method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
+      body: formData,
+      // Note: Don't set Content-Type manually when sending FormData
     }));
 
     const data = await response.json();

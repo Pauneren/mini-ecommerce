@@ -3,6 +3,7 @@ backend/node_modules/
 .env
 backend/.env
 .DS_Store
+*.code-workspace
 backend/db/*.sqlite
 backend/uploads/*
 !backend/uploads/.gitkeep

@@ -2,7 +2,11 @@ const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 const path = require("path");
 
-const dbPath = path.join(__dirname, "db", "store.sqlite");
+const dbPath = process.env.DATABASE_PATH
+  ? (path.isAbsolute(process.env.DATABASE_PATH)
+    ? process.env.DATABASE_PATH
+    : path.join(__dirname, process.env.DATABASE_PATH))
+  : path.join(__dirname, "db", "store.sqlite");
 
 let db;
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const { getDatabase } = require("../database");
 const { requireAdmin } = require("../middleware/auth");
+const { upload } = require("./upload");
 
 const router = express.Router();
 
@@ -32,11 +33,19 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Admin endpoint: POST /api/products
-router.post("/", requireAdmin, async (req, res, next) => {
+router.post("/", requireAdmin, upload.single("image_file"), async (req, res, next) => {
   try {
-    const { name, price, image, short_description, description } = req.body;
+    const { name, price, short_description, description } = req.body;
 
-    if (!name || !price || !image || !short_description || !description) {
+    const uploadedImageUrl = req.file
+      ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+      : null;
+
+    if (!uploadedImageUrl) {
+      return res.status(400).json({ error: "Product image upload is required." });
+    }
+
+    if (!name || !price || !short_description || !description) {
       return res.status(400).json({ error: "All product fields are required." });
     }
 
@@ -48,7 +57,7 @@ router.post("/", requireAdmin, async (req, res, next) => {
       `,
       name,
       price,
-      image,
+      uploadedImageUrl,
       short_description,
       description
     );
@@ -60,15 +69,25 @@ router.post("/", requireAdmin, async (req, res, next) => {
 });
 
 // Admin endpoint: PUT /api/products/:id
-router.put("/:id", requireAdmin, async (req, res, next) => {
+router.put("/:id", requireAdmin, upload.single("image_file"), async (req, res, next) => {
   try {
-    const { name, price, image, short_description, description } = req.body;
+    const { name, price, short_description, description } = req.body;
+    const db = await getDatabase();
+    const existingProduct = await db.get("SELECT * FROM products WHERE id = ?", req.params.id);
 
-    if (!name || !price || !image || !short_description || !description) {
+    if (!existingProduct) {
+      return res.status(404).json({ error: "Product not found." });
+    }
+
+    const uploadedImageUrl = req.file
+      ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+      : null;
+    const imageUrl = uploadedImageUrl || existingProduct.image;
+
+    if (!name || !price || !imageUrl || !short_description || !description) {
       return res.status(400).json({ error: "All product fields are required." });
     }
 
-    const db = await getDatabase();
     await db.run(
       `
       UPDATE products
@@ -77,7 +96,7 @@ router.put("/:id", requireAdmin, async (req, res, next) => {
       `,
       name,
       price,
-      image,
+      imageUrl,
       short_description,
       description,
       req.params.id
