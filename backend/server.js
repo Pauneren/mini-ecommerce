@@ -20,28 +20,28 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// CORS allows the frontend to call this backend from another port or domain.
+function normalizeOrigin(url) {
+  if (!url || typeof url !== "string") return null;
+  return url.replace(/\/$/, "");
+}
+
+// CORS: local dev + deployed Netlify (set FRONTEND_URL to your https://....netlify.app)
 const allowedOrigins = new Set(
   [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3010",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-    "http://127.0.0.1:3010",
-    process.env.FRONTEND_URL
+    normalizeOrigin("http://localhost:3000"),
+    normalizeOrigin("http://localhost:3001"),
+    normalizeOrigin(process.env.FRONTEND_URL),
   ].filter(Boolean)
 );
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow non-browser requests (curl/Postman) and configured frontend origins.
-    if (!origin || allowedOrigins.has(origin)) {
+    if (!origin || allowedOrigins.has(normalizeOrigin(origin))) {
       return callback(null, true);
     }
-    return callback(new Error("Not allowed by CORS"));
+    return callback(null, false);
   },
-  credentials: true
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -77,25 +77,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Something went wrong on the server." });
 });
 
-function startServer(preferredPort, attemptsRemaining = 10) {
-  const server = app.listen(preferredPort, () => {
-    console.log(`Server running at http://localhost:${preferredPort}`);
-  });
-
-  server.on("error", (error) => {
-    if (error.code === "EADDRINUSE" && attemptsRemaining > 0) {
-      const nextPort = Number(preferredPort) + 1;
-      console.warn(`Port ${preferredPort} is in use, retrying on ${nextPort}...`);
-      startServer(nextPort, attemptsRemaining - 1);
-      return;
-    }
-
-    console.error("Failed to start server:", error);
-    process.exit(1);
-  });
-}
-
 // Start server after the database tables are ready.
 initializeDatabase().then(() => {
-  startServer(Number(PORT));
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
 });

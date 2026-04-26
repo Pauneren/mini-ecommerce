@@ -8,7 +8,8 @@ function showMessage(text, type = "notice") {
   loginMessage.innerHTML = `<div class="${type}">${text}</div>`;
 }
 
-const API_BASE_FALLBACK = typeof API_BASE !== 'undefined' ? API_BASE : window.API_BASE || 'http://localhost:5050/api';
+const API_BASE_FALLBACK =
+  typeof API_BASE !== "undefined" ? API_BASE : window.API_BASE || "http://localhost:5050/api";
 
 async function login(event) {
   event.preventDefault();

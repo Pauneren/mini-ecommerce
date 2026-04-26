@@ -1,9 +1,12 @@
-// For local development use:
-const API_BASE = "http://localhost:5053/api";
-window.API_BASE = API_BASE;
+// LOCAL DEVELOPMENT:
+// const API_BASE = "http://localhost:5050/api";
 
-// For deployment replace it with:
-// const API_BASE = "https://YOUR-BACKEND-URL/api";
+// PRODUCTION:
+// After deploying the backend on Render, replace this with:
+// const API_BASE = "https://YOUR-RENDER-BACKEND-URL.onrender.com/api";
+
+const API_BASE = "http://localhost:5050/api";
+window.API_BASE = API_BASE;
 
 function money(value) {
   return `$${Number(value).toFixed(2)}`;
