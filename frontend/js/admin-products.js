@@ -8,7 +8,7 @@ const cancelEditBtn = document.getElementById("cancel-edit-btn");
 const saveProductBtn = document.getElementById("save-product-btn");
 
 function showMessage(text, type = "notice") {
-  productMessage.innerHTML = `<div class="${type}">${text}</div>`;
+  productMessage.innerHTML = `<div class="${escapeHtml(type)}">${escapeHtml(text)}</div>`;
 }
 
 function clearProductForm() {
@@ -53,6 +53,17 @@ async function loadAdminProducts() {
 
   try {
     const response = await fetch(`${API_BASE}/products`, auth.addAuthHeader());
+
+    if (response.status === 401) {
+      auth.removeAuthToken();
+      window.location.href = "admin-login.html";
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Server error ${response.status}`);
+    }
+
     const products = await response.json();
 
     if (!products.length) {
@@ -67,15 +78,15 @@ async function loadAdminProducts() {
       row.className = "admin-product";
 
       row.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
+        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
         <div>
-          <h3>${product.name}</h3>
-          <p>${product.short_description}</p>
+          <h3>${escapeHtml(product.name)}</h3>
+          <p>${escapeHtml(product.short_description)}</p>
           <div class="price">${money(product.price)}</div>
         </div>
         <div class="admin-product-actions">
-          <button class="btn secondary" type="button" data-edit="${product.id}">Edit</button>
-          <button class="btn danger" type="button" data-delete="${product.id}">Delete</button>
+          <button class="btn secondary" type="button" data-edit="${escapeHtml(String(product.id))}">Edit</button>
+          <button class="btn danger" type="button" data-delete="${escapeHtml(String(product.id))}">Delete</button>
         </div>
       `;
 

@@ -13,7 +13,7 @@ function renderCheckoutSummary() {
   target.innerHTML = `
     ${cart.map(item => `
       <div class="summary-row">
-        <span>${item.name} x ${item.quantity}</span>
+        <span>${escapeHtml(item.name)} x ${escapeHtml(String(item.quantity))}</span>
         <span>${money(item.price * item.quantity)}</span>
       </div>
     `).join("")}

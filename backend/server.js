@@ -104,8 +104,15 @@ async function seedIfEmpty(db) {
 
 // Start server after the database tables are ready.
 initializeDatabase().then(async (db) => {
-  await seedIfEmpty(db);
+  try {
+    await seedIfEmpty(db);
+  } catch (err) {
+    console.error("Auto-seed failed (server will still start):", err.message);
+  }
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
   });
+}).catch((err) => {
+  console.error("Failed to initialise database:", err);
+  process.exit(1);
 });

@@ -112,7 +112,12 @@ router.put("/:id", requireAdmin, upload.single("image_file"), async (req, res, n
 router.delete("/:id", requireAdmin, async (req, res, next) => {
   try {
     const db = await getDatabase();
-    await db.run("DELETE FROM products WHERE id = ?", req.params.id);
+    const result = await db.run("DELETE FROM products WHERE id = ?", req.params.id);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: "Product not found." });
+    }
+
     res.json({ message: "Product deleted." });
   } catch (error) {
     next(error);

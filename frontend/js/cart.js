@@ -20,14 +20,14 @@ function renderCart() {
     const row = document.createElement("div");
     row.className = "cart-item";
     row.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
+      <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">
       <div>
-        <h3>${item.name}</h3>
+        <h3>${escapeHtml(item.name)}</h3>
         <p class="price">${money(item.price)}</p>
       </div>
       <div>
-        <input class="quantity-input" type="number" min="1" value="${item.quantity}" data-id="${item.id}">
-        <button class="btn danger" data-remove="${item.id}" type="button">Remove</button>
+        <input class="quantity-input" type="number" min="1" value="${escapeHtml(String(item.quantity))}" data-id="${escapeHtml(String(item.id))}">
+        <button class="btn danger" data-remove="${escapeHtml(String(item.id))}" type="button">Remove</button>
       </div>
     `;
     cartItems.appendChild(row);

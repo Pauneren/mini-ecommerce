@@ -5,7 +5,7 @@ const loginMessage = document.getElementById("login-message");
 const loginBtn = document.getElementById("login-btn");
 
 function showMessage(text, type = "notice") {
-  loginMessage.innerHTML = `<div class="${type}">${text}</div>`;
+  loginMessage.innerHTML = `<div class="${escapeHtml(type)}">${escapeHtml(text)}</div>`;
 }
 
 const API_BASE_FALLBACK =

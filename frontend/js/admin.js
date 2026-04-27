@@ -4,6 +4,17 @@ async function loadOrders() {
 
   try {
     const response = await fetch(`${API_BASE}/orders`, auth.addAuthHeader());
+
+    if (response.status === 401) {
+      auth.removeAuthToken();
+      window.location.href = "admin-login.html";
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Server error ${response.status}`);
+    }
+
     const orders = await response.json();
 
     if (!orders.length) {
@@ -20,22 +31,22 @@ async function loadOrders() {
       card.innerHTML = `
         <header>
           <div>
-            <h3>Order #${order.id}</h3>
-            <p>${new Date(order.created_at).toLocaleString()}</p>
+            <h3>Order #${escapeHtml(String(order.id))}</h3>
+            <p>${escapeHtml(new Date(order.created_at).toLocaleString())}</p>
           </div>
           <strong>${money(order.total)}</strong>
         </header>
 
-        <p><strong>Customer:</strong> ${order.customer_name}</p>
-        <p><strong>Email:</strong> ${order.customer_email}</p>
-        <p><strong>Phone:</strong> ${order.customer_phone}</p>
-        <p><strong>Address:</strong> ${order.address}, ${order.city}, ${order.postal_code}</p>
-        ${order.notes ? `<p><strong>Notes:</strong> ${order.notes}</p>` : ""}
+        <p><strong>Customer:</strong> ${escapeHtml(order.customer_name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(order.customer_email)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(order.customer_phone)}</p>
+        <p><strong>Address:</strong> ${escapeHtml(order.address)}, ${escapeHtml(order.city)}, ${escapeHtml(order.postal_code)}</p>
+        ${order.notes ? `<p><strong>Notes:</strong> ${escapeHtml(order.notes)}</p>` : ""}
 
         <h4>Products</h4>
         ${order.items.map(item => `
           <div class="summary-row">
-            <span>${item.product_name} x ${item.quantity}</span>
+            <span>${escapeHtml(item.product_name)} x ${escapeHtml(String(item.quantity))}</span>
             <span>${money(item.price * item.quantity)}</span>
           </div>
         `).join("")}

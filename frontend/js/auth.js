@@ -20,9 +20,9 @@ function isLoggedIn() {
   return !!getAuthToken();
 }
 
-// Redirect to login page if not authenticated
+// Redirect to login page if not authenticated or token is expired
 function requireAuth() {
-  if (!isLoggedIn()) {
+  if (!isLoggedIn() || !validateToken()) {
     window.location.href = 'admin-login.html';
     return false;
   }
