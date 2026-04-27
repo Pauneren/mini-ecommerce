@@ -91,7 +91,13 @@ router.post('/', requireAdmin, upload.single('image'), async (req, res) => {
 router.delete('/:publicId', requireAdmin, async (req, res) => {
   try {
     const { publicId } = req.params;
-    const imagePath = path.join(uploadsDir, publicId);
+    const imagePath = path.resolve(uploadsDir, publicId);
+
+    // Reject paths that escape the uploads directory
+    if (!imagePath.startsWith(uploadsDir + path.sep)) {
+      return res.status(400).json({ error: 'Invalid filename.' });
+    }
+
     await fs.promises.unlink(imagePath);
 
     res.json({ message: 'Image deleted successfully' });

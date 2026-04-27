@@ -2,11 +2,24 @@
 // const API_BASE = "http://localhost:5050/api";
 
 // PRODUCTION:
+// After deploying the backend on Render, replace this with:
+// const API_BASE = "https://YOUR-RENDER-BACKEND-URL.onrender.com/api";
+
 const API_BASE = "https://mini-ecommerce-ysxy.onrender.com/api";
 
 window.API_BASE = API_BASE;
+
 function money(value) {
   return `$${Number(value).toFixed(2)}`;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function getCart() {
@@ -50,13 +63,13 @@ function createProductCard(product) {
   article.className = "product-card";
 
   article.innerHTML = `
-    <img src="${product.image}" alt="${product.name}">
+    <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
     <div class="product-info">
-      <h3>${product.name}</h3>
-      <p>${product.short_description}</p>
+      <h3>${escapeHtml(product.name)}</h3>
+      <p>${escapeHtml(product.short_description)}</p>
       <div class="price">${money(product.price)}</div>
       <div class="card-actions">
-        <a class="btn secondary" href="product.html?id=${product.id}">View</a>
+        <a class="btn secondary" href="product.html?id=${escapeHtml(String(product.id))}">View</a>
         <button class="btn" type="button">Add</button>
       </div>
     </div>
@@ -93,21 +106,26 @@ async function loadProductDetail() {
 
   const id = getProductIdFromUrl();
 
+  if (!id) {
+    detail.innerHTML = `<div class="notice">Product not found.</div>`;
+    return;
+  }
+
   try {
-    const response = await fetch(`${API_BASE}/products/${id}`);
+    const response = await fetch(`${API_BASE}/products/${encodeURIComponent(id)}`);
     if (!response.ok) throw new Error("Product not found");
     const product = await response.json();
 
-    document.title = `${product.name} | Mini Store`;
+    document.title = `${escapeHtml(product.name)} | Mini Store`;
 
     detail.innerHTML = `
       <div class="detail-image">
-        <img src="${product.image}" alt="${product.name}">
+        <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
       </div>
       <div class="detail-panel">
         <p class="eyebrow">Product detail</p>
-        <h1>${product.name}</h1>
-        <p class="lead">${product.description}</p>
+        <h1>${escapeHtml(product.name)}</h1>
+        <p class="lead">${escapeHtml(product.description)}</p>
         <div class="price">${money(product.price)}</div>
         <div class="qty-row">
           <label for="quantity">Quantity</label>
