@@ -85,12 +85,18 @@ async function loadProducts(targetId, limit = null) {
 
   try {
     const response = await fetch(`${API_BASE}/products`);
+
+    if (!response.ok) {
+      throw new Error(`Backend error: ${response.status}`);
+    }
+
     const products = await response.json();
     target.innerHTML = "";
 
     const list = limit ? products.slice(0, limit) : products;
     list.forEach((product) => target.appendChild(createProductCard(product)));
   } catch (error) {
+    console.error("Could not load products:", error);
     target.innerHTML = `<div class="notice">Could not load products. Make sure the backend is running.</div>`;
   }
 }
