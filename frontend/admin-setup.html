@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Setup | MiniStore</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Mini<span>Store</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a class="cart-link" href="cart.html">Cart (<span data-cart-count>0</span>)</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <p class="eyebrow">First-time setup</p>
+      <h1>Create admin account</h1>
+      <p class="lead">Set up your store owner account. This can only be done once.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="panel checkout-layout">
+        <form id="setup-form">
+          <h2>Create your account</h2>
+          <p class="form-help">Choose an email and password you will use to manage your store.</p>
+
+          <div id="setup-message"></div>
+
+          <div class="form-grid">
+            <div class="full">
+              <label for="email">Admin email</label>
+              <input id="email" name="email" type="email" placeholder="admin@yourstore.com" required>
+            </div>
+            <div class="full">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" placeholder="At least 8 characters" required>
+            </div>
+            <div class="full">
+              <label for="confirm_password">Confirm password</label>
+              <input id="confirm_password" name="confirm_password" type="password" placeholder="Repeat your password" required>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit" id="setup-btn">Create account</button>
+          </div>
+        </form>
+
+        <aside class="panel">
+          <h2>One-time setup</h2>
+          <p>This page is only available before any admin account exists.</p>
+          <p>Once your account is created:</p>
+          <ul>
+            <li>This page will redirect to login</li>
+            <li>Use your email and password to log in</li>
+            <li>You can change your credentials later in Admin Settings</li>
+          </ul>
+          <p><strong>Security note:</strong> Use a strong password and keep it safe.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 MiniStore. Built as a beginner-friendly full-stack e-commerce starter.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin-setup.js"></script>
+</body>
+</html>

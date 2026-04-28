@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Settings | MiniStore</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Mini<span>Store</span></a>
+    <nav class="nav-links">
+      <a href="admin.html">Orders</a>
+      <a href="admin-products.html">Manage Products</a>
+      <a href="admin-settings.html" class="active">Settings</a>
+      <button class="btn secondary" id="logout-btn" onclick="auth.logout()">Logout</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <p class="eyebrow">Admin</p>
+      <h1>Settings</h1>
+      <p class="lead">Update your admin email and password.</p>
+
+      <div class="admin-tabs">
+        <a href="admin.html">Orders</a>
+        <a href="admin-products.html">Manage Products</a>
+        <a class="active" href="admin-settings.html">Settings</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="panel checkout-layout">
+        <form id="settings-form" class="panel">
+          <h2>Change credentials</h2>
+          <p class="form-help">Enter your current password to confirm any changes. Leave new email or new password blank to keep them unchanged.</p>
+
+          <div id="settings-message"></div>
+
+          <div class="form-grid">
+            <div class="full">
+              <label for="current_password">Current password <span style="color:var(--accent)">*</span></label>
+              <input id="current_password" name="current_password" type="password" placeholder="Your current password" required>
+            </div>
+            <div class="full">
+              <label for="new_email">New email <span class="form-help">(leave blank to keep current)</span></label>
+              <input id="new_email" name="new_email" type="email" placeholder="new@example.com">
+            </div>
+            <div class="full">
+              <label for="new_password">New password <span class="form-help">(leave blank to keep current)</span></label>
+              <input id="new_password" name="new_password" type="password" placeholder="At least 8 characters">
+            </div>
+            <div class="full">
+              <label for="confirm_new_password">Confirm new password</label>
+              <input id="confirm_new_password" name="confirm_new_password" type="password" placeholder="Repeat new password">
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit" id="settings-btn">Save changes</button>
+          </div>
+        </form>
+
+        <aside class="panel">
+          <h2>Security tips</h2>
+          <ul>
+            <li>Use a password that is at least 8 characters long</li>
+            <li>Mix letters, numbers, and symbols</li>
+            <li>Never share your credentials</li>
+            <li>After changing your email, use the new email to log in next time</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 MiniStore. Built as a beginner-friendly full-stack e-commerce starter.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin-settings.js"></script>
+</body>
+</html>

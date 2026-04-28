@@ -2,7 +2,7 @@
 
 A simple full-stack e-commerce starter using HTML, CSS, vanilla JavaScript, Node.js, Express, and SQLite.
 
-**Includes:** home, products, product detail, cart (localStorage), checkout, thank-you page, admin login (JWT), admin orders, admin product manager with **local image uploads**, and a REST API.
+**Includes:** home, products, product detail, cart (localStorage), checkout, thank-you page, admin account setup, admin login (JWT), admin orders, admin product manager with **local image uploads**, admin settings (change email/password), and a REST API.
 
 No payment processing is included.
 
@@ -181,10 +181,36 @@ POST   /api/upload          (admin + JWT)
 
 ---
 
+## Admin account setup
+
+The admin system uses a real account stored in SQLite — no hardcoded credentials.
+
+### First time (new deployment)
+
+1. Visit `/admin-setup.html`
+2. Enter your email and a password (minimum 8 characters)
+3. Your account is created and you are logged in automatically
+4. **This page only works once.** After an admin exists, it redirects to login.
+
+### Logging in
+
+Visit `/admin-login.html` and enter your email and password.
+
+If no admin account exists yet, the login page shows a link to the setup page instead of the login form.
+
+### Changing your credentials
+
+While logged in, visit `/admin-settings.html`.
+
+Enter your current password and provide a new email, new password, or both.
+
+---
+
 ## Security notes
 
 - Admin routes for products, uploads, and orders require a valid JWT.
-- Use strong `JWT_SECRET` and admin password in production.
+- Passwords are stored as bcrypt hashes — never plain text.
+- Use a strong `JWT_SECRET` in production (set it as an environment variable on Render).
 - The storefront renders product text/HTML from the database; treat admin access carefully to avoid stored XSS (see `SECURITY-NOTE.md`).
 
 ---
